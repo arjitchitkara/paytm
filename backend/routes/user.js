@@ -4,12 +4,13 @@ const zod = require("zod");
 const { JWT_SECRET } = require("../config");
 const { User } = require("../db");
 const { authMiddleware } = require("../middleware");
+const { Account } = require("../db");
 
 const signupBody = zod.object({
   username: zod.string(),
   password: zod.string(),
-  firstname: zod.string(),
-  lastname: zod.string(),
+  firstName: zod.string(),
+  lastName: zod.string(),
 });
 
 const router = express.Router();
@@ -32,8 +33,8 @@ router.post("/signup", async (req, res) => {
   const user = await User.create({
     username: req.body.username,
     password: req.body.password,
-    firstname: req.body.firstname,
-    lastname: req.body.lastname,
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
   });
 
   const userId = user._id;
@@ -77,8 +78,8 @@ router.post("/signin", async (req, res) => {
 
 const updateBody = zod.object({
   password: zod.string().optional(),
-  firstname: zod.string().optional(),
-  lastname: zod.string().optional(),
+  firstName: zod.string().optional(),
+  lastName: zod.string().optional(),
 });
 
 router.put("/", authMiddleware, async (req, res) => {
@@ -96,14 +97,14 @@ router.put("/", authMiddleware, async (req, res) => {
 router.get("/bulk", async (req, res) => {
   const filter = req.query.filter;
   const users = await User.find({
-    $or: [{ firstname: filter }, { lastname: filter }],
+    $or: [{ firstName: filter }, { lastName: filter }],
   });
   res.json({
     user: users.map((user) => ({
       id: user._id,
       username: user.username,
-      firstname: user.firstname,
-      lastname: user.lastname,
+      firstName: user.firstName,
+      lastName: user.lastName,
     })),
   });
 });
