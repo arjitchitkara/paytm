@@ -1,4 +1,8 @@
-import { BrowerRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Signup from "./Signup";
+import Signin from "./Signin";
+import Dashboard from "./Dashboard";
+import SendMoney from "./SendMoney";
 
 function App() {
   return (
